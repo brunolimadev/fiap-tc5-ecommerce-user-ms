@@ -4,15 +4,16 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.fiap.fiap_tc5_ecommerce_user_ms.enums.UserRoleEnum;
+import br.com.fiap.fiap_tc5_ecommerce_user_ms.models.dtos.GetUserByEmailDto;
 import br.com.fiap.fiap_tc5_ecommerce_user_ms.models.dtos.UserDto;
 import br.com.fiap.fiap_tc5_ecommerce_user_ms.models.entities.User;
 import br.com.fiap.fiap_tc5_ecommerce_user_ms.repositories.UserRepository;
 import br.com.fiap.fiap_tc5_ecommerce_user_ms.services.UserService;
+import jakarta.validation.Valid;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void create(UserDto userDto) {
 
-        Optional<UserDetails> userFounded = this.userRepository.findByEmail(userDto.email());
+        Optional<User> userFounded = this.userRepository.findByEmail(userDto.email());
 
         if (userFounded.isPresent()) {
             throw new RuntimeException("Erro ao criar o usuário! Por favor, tente novamente.");
@@ -47,6 +48,28 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encrypedPassoword);
 
         this.userRepository.save(user);
+    }
+
+    @Override
+    public GetUserByEmailDto findByEmail(@Valid String email) {
+
+        Optional<User> userFounded = this.userRepository.findByEmail(email);
+
+        if (!userFounded.isPresent()) {
+            throw new RuntimeException("Usuário não encontrado!");
+        }
+
+        User user = userFounded.get();
+
+        return new GetUserByEmailDto(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPassword(),
+                user.isActive(),
+                user.getCreatedAt(),
+                user.getRole());
+
     }
 
     /**
@@ -66,4 +89,5 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
 }

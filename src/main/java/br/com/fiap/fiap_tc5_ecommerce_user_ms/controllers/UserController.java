@@ -14,7 +14,6 @@ import br.com.fiap.fiap_tc5_ecommerce_user_ms.models.dtos.UserDto;
 import br.com.fiap.fiap_tc5_ecommerce_user_ms.services.UserService;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/users")

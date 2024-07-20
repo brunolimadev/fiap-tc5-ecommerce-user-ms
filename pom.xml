@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.fiap</groupId>
 	<artifactId>fiap-tc5-ecommerce-user-ms</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>fiap-tc5-ecommerce-user-ms</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
